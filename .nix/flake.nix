@@ -57,11 +57,16 @@
 				#pkgs.obsidian
       ]; 
 
-	# macOS settings
+	#... macOS settings
 	system.defaults = {
 		dock.autohide = true;
 		finder.FXPreferredViewStyle = "clmv";
 		NSGlobalDomain.KeyRepeat = 2;
+	};
+
+	system.keyboard = {
+		enableKeyMapping = true;
+		remapCapsLockToEscape = true;
 	};
 
 	# setting myself as the primary user to _actually_ use homebrew
