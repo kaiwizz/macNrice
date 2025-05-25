@@ -57,18 +57,6 @@
 				#pkgs.obsidian
       ]; 
 
-	#... macOS settings
-	system.defaults = {
-		dock.autohide = true;
-		finder.FXPreferredViewStyle = "clmv";
-		NSGlobalDomain.KeyRepeat = 2;
-	};
-
-	system.keyboard = {
-		enableKeyMapping = true;
-		remapCapsLockToEscape = true;
-	};
-
 	# setting myself as the primary user to _actually_ use homebrew
 	system.primaryUser = "kaiwizardly";
 
@@ -79,10 +67,25 @@
 			"juliaup"
 		];
 		casks = [			
-			"firefox"
+			# "firefox"
 			"the-unarchiver"
 		];
+		onActivation.cleanup = "zap"; # remove the apps you don't want anymore
 	};
+
+	#... macOS settings
+	system.defaults = {
+		dock.autohide = true;
+		finder.FXPreferredViewStyle = "clmv";
+		NSGlobalDomain.KeyRepeat = 2; 
+								# in milliseconds. Need to log out and log back in to apply this
+	};
+
+	system.keyboard = {
+		enableKeyMapping = true;
+		remapCapsLockToEscape = true;
+	};
+
 
 	#... to bring the apps in spotlight
 	system.activationScripts.applications.text = let
