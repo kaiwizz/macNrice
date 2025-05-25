@@ -1,31 +1,18 @@
 {
-  # To implement the changes
-  # sudo darwin-rebuild switch --flake ~/nix#AirM3
+  	# To implement the changes
+  	#> sudo darwin-rebuild switch --flake ~/.nix#AirM3
+	# this is only for me as my folder is at "~/.nix"
+
   description = "Example nix-darwin system flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-
 	nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-
-    # # Optional: Declarative tap management
-    # homebrew-core = {
-    #   url = "github:homebrew/homebrew-core";
-    #   flake = false;
-    # };
-    # homebrew-cask = {
-    #   url = "github:homebrew/homebrew-cask";
-    #   flake = false;
-    # };
 
   };
 
-
-  # outputs = inputs@{ self, nix-darwin, nixpkgs}:
-  # outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, homebrew-core, homebrew-cask, ...}:
-  # outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew}:
   outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew}:
   let
 
@@ -39,7 +26,7 @@
       environment.systemPackages =
       [ 
 		pkgs.neofetch
-	  	pkgs.mkalias	# to make sure the apps show up in spotlight
+	  	pkgs.mkalias	# to bring the apps in spotlight
 		pkgs.stow
 		pkgs.vim
 		pkgs.git
@@ -51,6 +38,9 @@
 		# pkgs.obsidian
       ]; 
 
+	# setting myself as the primary user to use homebrew
+	system.primaryUser = "kaiwizardly";
+
 	homebrew = {
 		enable = true;
 		casks = [
@@ -58,9 +48,6 @@
 			"the-unarchiver"
 		];
 	};
-
-	# setting myself as the primary user to be able to use homebrew
-	system.primaryUser = "kaiwizardly";
 
 	system.activationScripts.applications.text = let
 	  env = pkgs.buildEnv {
@@ -86,7 +73,7 @@
       nix.settings.experimental-features = "nix-command flakes";
 
       # Enable alternative shell support in nix-darwin.
-      # programs.fish.enable = true;
+      programs.fish.enable = true;
 
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -117,18 +104,6 @@
             # User owning the Homebrew prefix
             user = "kaiwizardly";
 
-			autoMigrate = true;
-
-            # # Optional: Declarative tap management
-            # taps = {
-            #   "homebrew/homebrew-core" = homebrew-core;
-            #   "homebrew/homebrew-cask" = homebrew-cask;
-            # };
-
-            # # Optional: Enable fully-declarative tap management
-            # #
-            # # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-            # mutableTaps = false;
           };
         }
       ];
