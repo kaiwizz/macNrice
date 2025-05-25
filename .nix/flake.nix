@@ -1,19 +1,39 @@
 {
-  	# To implement the changes
-  	#> sudo darwin-rebuild switch --flake ~/.nix#AirM3
+	# To implement the changes
+ 	#> sudo darwin-rebuild switch --flake ~/.nix#AirM3
 	# this is only for me as my folder is at "~/.nix"
 
   description = "Example nix-darwin system flake";
 
   inputs = {
+		#... nix and darwin
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:nix-darwin/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-	nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+		#... Homebrew stuff
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    # Optional: Declarative tap management
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
 
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew}:
+# output = { self, nixpkgs, darwin, nix-homebrew, homebrew-core, homebrew-cask, ... }: { darwinConfigurations.macbook = {
+  outputs = inputs@{	self, 
+										 	nix-darwin, 
+											nixpkgs, 
+											nix-homebrew, 
+											homebrew-core, 
+											homebrew-cask, 
+											...}:
   let
 
     configuration = { pkgs, config, ... }: {
@@ -25,20 +45,27 @@
 	
       environment.systemPackages =
       [ 
-		pkgs.neofetch
-	  	pkgs.mkalias	# to bring the apps in spotlight
-		pkgs.stow
-		pkgs.vim
-		pkgs.git
-		pkgs.gh
-	  	pkgs.neovim
-	    pkgs.alacritty
-	    pkgs.tmux
-	  	pkgs.texliveFull
-		# pkgs.obsidian
+				pkgs.neofetch
+	  		pkgs.mkalias	# to bring the apps in spotlight
+				pkgs.stow
+				pkgs.vim
+				pkgs.git
+				pkgs.gh
+	  		pkgs.neovim
+	    	pkgs.alacritty
+	    	pkgs.tmux
+	  		pkgs.texliveFull
+				#pkgs.obsidian
       ]; 
 
-	# setting myself as the primary user to use homebrew
+	# macOS settings
+	system.defaults = {
+		dock.autohide = true;
+		finder.FXPreferredViewStyle = "clmv";
+		NSGlobalDomain.KeyRepeat = 2;
+	};
+
+	# setting myself as the primary user to _actually_ use homebrew
 	system.primaryUser = "kaiwizardly";
 
 	homebrew = {
@@ -46,9 +73,11 @@
 		casks = [
 			"firefox"
 			"the-unarchiver"
+			# "juliaup"
 		];
 	};
 
+	# 
 	system.activationScripts.applications.text = let
 	  env = pkgs.buildEnv {
 	    name = "system-applications";
@@ -104,6 +133,16 @@
             # User owning the Homebrew prefix
             user = "kaiwizardly";
 
+ 						# Optional: Declarative tap management
+            taps = {
+              "homebrew/homebrew-core" = homebrew-core;
+              "homebrew/homebrew-cask" = homebrew-cask;
+            };
+
+            # Optional: Enable fully-declarative tap management
+            #
+            # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
+            mutableTaps = false;
           };
         }
       ];
