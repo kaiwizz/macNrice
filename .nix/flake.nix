@@ -79,6 +79,7 @@
 		finder.FXPreferredViewStyle = "clmv";
 		NSGlobalDomain.KeyRepeat = 2; 
 								# in milliseconds. Need to log out and log back in to apply this
+		trackpad.Clicking = true; # don't like digging into my trackpad
 	};
 
 	system.keyboard = {
