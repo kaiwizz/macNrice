@@ -1,3 +1,7 @@
+**source:**[Nix is my favorite package manager to use on macOS](https://youtu.be/Z8BL8mdzWHI?si=ojwQbOVSoTEH29tR)
+- - -
+
+
 ```bash
 cd ricing
 stow .
