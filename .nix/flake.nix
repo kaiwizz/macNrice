@@ -26,7 +26,6 @@
 
   };
 
-# output = { self, nixpkgs, darwin, nix-homebrew, homebrew-core, homebrew-cask, ... }: { darwinConfigurations.macbook = {
   outputs = inputs@{	self, 
 										 	nix-darwin, 
 											nixpkgs, 
@@ -45,7 +44,7 @@
 	
       environment.systemPackages =
       [ 
-				pkgs.neofetch
+				pkgs.neofetch	# MUST INSTALL !!!!
 	  		pkgs.mkalias	# to bring the apps in spotlight
 				pkgs.stow
 				pkgs.vim
@@ -68,16 +67,19 @@
 	# setting myself as the primary user to _actually_ use homebrew
 	system.primaryUser = "kaiwizardly";
 
+	# formula i.e. core i.e. apps into "brews"
 	homebrew = {
 		enable = true;
-		casks = [
+		brews = [
+			"juliaup"
+		];
+		casks = [			
 			"firefox"
 			"the-unarchiver"
-			# "juliaup"
 		];
 	};
 
-	# 
+	#... to bring the apps in spotlight
 	system.activationScripts.applications.text = let
 	  env = pkgs.buildEnv {
 	    name = "system-applications";
@@ -127,7 +129,7 @@
             # Install Homebrew under the default prefix
             enable = true;
 
-            # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
+            # For Apple Silicon 
             enableRosetta = true;
 
             # User owning the Homebrew prefix
@@ -141,7 +143,8 @@
 
             # Optional: Enable fully-declarative tap management
             #
-            # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
+						# With mutableTaps disabled, taps can no longer be added
+						# imperatively with `brew tap`.
             mutableTaps = false;
           };
         }
