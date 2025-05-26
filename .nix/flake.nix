@@ -70,12 +70,20 @@
 		];
 		casks = [			
 			# "firefox"
+			"google-chrome"
 			"google-drive"
 			"dropbox"
 			"alacritty"
+			"obsidian"
+			"zotero"
 			"the-unarchiver"
 		];
-		onActivation.cleanup = "zap"; # remove the apps you don't want anymore
+		# onActivation.cleanup = "zap"; # remove the apps you don't want anymore
+		onActivation = {
+			cleanup = "zap";		# remove the apps you don't want anymore
+			autoUpdate = true;	# for updating and,
+			upgrade = true;			# upgrading home brew packages when we darwin-rebuild
+		}; 
 	};
 
 	#... macOS settings ...

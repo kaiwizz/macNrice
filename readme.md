@@ -11,11 +11,23 @@ stow .
 ```
 This will make `symlinks` of all the files and folders at `~/`
 
-to update the packages,
+To update the `nix` packages,
 ```bash
 cd .nix/
 nix flake update
 sudo darwin-rebuild switch --flake ~/.nix#AirM3
 ```
 
+To automatically update the `brew` packages, set the following flags in `flake.nix`
 
+```nix
+homebrew = {
+	# ...
+	onActivation = {
+		cleanup = "zap";		# to remove apps not listed
+		autoUpdate = true;	
+		upgrade = true;			
+	}; 
+	# ...
+};
+```
