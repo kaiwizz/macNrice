@@ -42,6 +42,7 @@
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
 	
+			# ...Mainly Terminal Apps...
       environment.systemPackages =
       [ 
 				pkgs.neofetch	# MUST INSTALL !!!!
@@ -51,15 +52,16 @@
 				pkgs.git
 				pkgs.gh
 	  		pkgs.neovim
-	    	pkgs.alacritty
 	    	pkgs.tmux
 	  		pkgs.texliveFull
 				#pkgs.obsidian
+	    	# pkgs.alacritty
       ]; 
 
 	# setting myself as the primary user to _actually_ use homebrew
 	system.primaryUser = "kaiwizardly";
 
+	# ... Mainly GUI apps ...
 	# formula i.e. core i.e. apps into "brews"
 	homebrew = {
 		enable = true;
@@ -68,18 +70,25 @@
 		];
 		casks = [			
 			# "firefox"
+			"google-drive"
+			"dropbox"
+			"alacritty"
 			"the-unarchiver"
 		];
 		onActivation.cleanup = "zap"; # remove the apps you don't want anymore
 	};
 
-	#... macOS settings
+	#... macOS settings ...
 	system.defaults = {
 		dock.autohide = true;
 		finder.FXPreferredViewStyle = "clmv";
 		NSGlobalDomain.KeyRepeat = 2; 
 								# in milliseconds. Need to log out and log back in to apply this
 		trackpad.Clicking = true; # don't like digging into my trackpad
+		# screensaver = {
+			# askForPassword = true;
+			# askForPasswordDelay = 30; # in seconds
+		# };
 	};
 
 	system.keyboard = {
@@ -88,7 +97,7 @@
 	};
 
 
-	#... to bring the apps in spotlight
+	#... to bring the apps in spotlight ...
 	system.activationScripts.applications.text = let
 	  env = pkgs.buildEnv {
 	    name = "system-applications";
